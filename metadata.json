@@ -1,0 +1,5 @@
+{
+  "name": "Unit Test Login Demo",
+  "description": "A professional demo of unit testing for a login page with email and password validation.",
+  "requestFramePermissions": []
+}
