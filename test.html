@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Unit Test – Trang Đăng Nhập</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: Arial, sans-serif; background: #f0f4f8; padding: 30px; }
+    h1 { font-size: 22px; color: #1e293b; margin-bottom: 6px; }
+    .subtitle { color: #64748b; font-size: 14px; margin-bottom: 24px; }
+    .summary { display: flex; gap: 16px; margin-bottom: 24px; flex-wrap: wrap; }
+    .sum-box { flex: 1; min-width: 140px; padding: 16px; border-radius: 10px; text-align: center; }
+    .sum-box.total { background: #e0f2fe; color: #0369a1; }
+    .sum-box.pass  { background: #dcfce7; color: #15803d; }
+    .sum-box.fail  { background: #fee2e2; color: #b91c1c; }
+    .sum-num   { font-size: 32px; font-weight: 700; }
+    .sum-label { font-size: 13px; margin-top: 4px; }
+    .group { background: #fff; border-radius: 10px; margin-bottom: 16px;
+             box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow: hidden; }
+    .group-header { padding: 12px 18px; font-weight: 600; font-size: 15px;
+                    background: #f8fafc; border-bottom: 1px solid #e2e8f0; color: #334155; }
+    .test-row { display: flex; align-items: center; gap: 12px;
+                padding: 11px 18px; border-bottom: 1px solid #f1f5f9; font-size: 14px; }
+    .test-row:last-child { border-bottom: none; }
+    .badge { font-size: 12px; font-weight: 700; padding: 3px 10px;
+             border-radius: 20px; min-width: 60px; text-align: center; }
+    .badge.pass { background: #dcfce7; color: #15803d; }
+    .badge.fail { background: #fee2e2; color: #b91c1c; }
+    .test-name  { flex: 1; color: #334155; }
+    .test-input { font-size: 12px; color: #64748b; background: #f8fafc;
+                  padding: 2px 8px; border-radius: 4px; font-family: monospace; }
+    .btn-run { display: block; width: 100%; padding: 14px;
+               background: linear-gradient(135deg, #6366f1, #8b5cf6);
+               color: #fff; border: none; border-radius: 10px;
+               font-size: 16px; font-weight: 600; cursor: pointer;
+               margin-bottom: 24px; }
+    .btn-run:hover { opacity: 0.9; }
+    .progress-bar { height: 8px; background: #e2e8f0; border-radius: 4px;
+                    margin-bottom: 24px; overflow: hidden; }
+    .progress-fill { height: 100%; background: linear-gradient(90deg, #22c55e, #16a34a);
+                     border-radius: 4px; width: 0%; transition: width 1s ease; }
+  </style>
+</head>
+<body>
+
+<h1>Unit Test – Trang Đăng Nhập</h1>
+<p class="subtitle">
+  Đề tài: Quy trình sinh tự động Unit Test hiệu quả dựa trên AI tạo sinh
+</p>
+
+<button class="btn-run" onclick="runAllTests()">
+  ▶ Chạy tất cả Unit Test
+</button>
+
+<div class="progress-bar">
+  <div class="progress-fill" id="progressFill"></div>
+</div>
+
+<div class="summary">
+  <div class="sum-box total">
+    <div class="sum-num" id="totalNum">0</div>
+    <div class="sum-label">Tổng số test</div>
+  </div>
+  <div class="sum-box pass">
+    <div class="sum-num" id="passNum">0</div>
+    <div class="sum-label">Passed</div>
+  </div>
+  <div class="sum-box fail">
+    <div class="sum-num" id="failNum">0</div>
+    <div class="sum-label">Failed</div>
+  </div>
+</div>
+
+<!-- Nhóm 1 -->
+<div class="group">
+  <div class="group-header">Nhóm 1 – Validate Email (5 test cases)</div>
+  <div class="test-row">
+    <span class="badge" id="t1">--</span>
+    <span class="test-name">Email hợp lệ cơ bản</span>
+    <span class="test-input">admin@gmail.com</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t2">--</span>
+    <span class="test-name">Email thiếu ký tự @</span>
+    <span class="test-input">admingmail.com</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t3">--</span>
+    <span class="test-name">Email để trống</span>
+    <span class="test-input">(rỗng)</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t4">--</span>
+    <span class="test-name">Email thiếu phần domain</span>
+    <span class="test-input">admin@</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t5">--</span>
+    <span class="test-name">Email có khoảng trắng</span>
+    <span class="test-input">admin @gmail.com</span>
+  </div>
+</div>
+
+<!-- Nhóm 2 -->
+<div class="group">
+  <div class="group-header">Nhóm 2 – Validate Mật khẩu (5 test cases)</div>
+  <div class="test-row">
+    <span class="badge" id="t6">--</span>
+    <span class="test-name">Mật khẩu đúng 8 ký tự</span>
+    <span class="test-input">12345678</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t7">--</span>
+    <span class="test-name">Mật khẩu dài hơn 8 ký tự</span>
+    <span class="test-input">matkhau123</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t8">--</span>
+    <span class="test-name">Mật khẩu ngắn hơn 8 ký tự</span>
+    <span class="test-input">1234</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t9">--</span>
+    <span class="test-name">Mật khẩu để trống</span>
+    <span class="test-input">(rỗng)</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t10">--</span>
+    <span class="test-name">Mật khẩu đúng 7 ký tự (biên)</span>
+    <span class="test-input">1234567</span>
+  </div>
+</div>
+
+<!-- Nhóm 3 -->
+<div class="group">
+  <div class="group-header">Nhóm 3 – Xử lý Đăng nhập (4 test cases)</div>
+  <div class="test-row">
+    <span class="badge" id="t11">--</span>
+    <span class="test-name">Cả hai đúng → thành công</span>
+    <span class="test-input">admin@gmail.com / 12345678</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t12">--</span>
+    <span class="test-name">Email sai, mật khẩu đúng → thất bại</span>
+    <span class="test-input">admingmail / 12345678</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t13">--</span>
+    <span class="test-name">Email đúng, mật khẩu sai → thất bại</span>
+    <span class="test-input">admin@gmail.com / 123</span>
+  </div>
+  <div class="test-row">
+    <span class="badge" id="t14">--</span>
+    <span class="test-name">Cả hai đều trống → thất bại</span>
+    <span class="test-input">(rỗng) / (rỗng)</span>
+  </div>
+</div>
+
+<script>
+  function validateEmail(email) {
+    if (!email || email.trim() === '') return false;
+    if (email.includes(' ')) return false;
+    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return regex.test(email);
+  }
+
+  function validatePassword(password) {
+    if (!password || password.trim() === '') return false;
+    return password.length >= 8;
+  }
+
+  function canLogin(email, password) {
+    return validateEmail(email) && validatePassword(password);
+  }
+
+  var tests = [
+    { id:'t1',  fn: function(){ return validateEmail('admin@gmail.com') === true; } },
+    { id:'t2',  fn: function(){ return validateEmail('admingmail.com') === false; } },
+    { id:'t3',  fn: function(){ return validateEmail('') === false; } },
+    { id:'t4',  fn: function(){ return validateEmail('admin@') === false; } },
+    { id:'t5',  fn: function(){ return validateEmail('admin @gmail.com') === false; } },
+    { id:'t6',  fn: function(){ return validatePassword('12345678') === true; } },
+    { id:'t7',  fn: function(){ return validatePassword('matkhau123') === true; } },
+    { id:'t8',  fn: function(){ return validatePassword('1234') === false; } },
+    { id:'t9',  fn: function(){ return validatePassword('') === false; } },
+    { id:'t10', fn: function(){ return validatePassword('1234567') === false; } },
+    { id:'t11', fn: function(){ return canLogin('admin@gmail.com','12345678') === true; } },
+    { id:'t12', fn: function(){ return canLogin('admingmail','12345678') === false; } },
+    { id:'t13', fn: function(){ return canLogin('admin@gmail.com','123') === false; } },
+    { id:'t14', fn: function(){ return canLogin('','') === false; } },
+  ];
+
+  function runAllTests() {
+    var pass = 0, fail = 0;
+    var delay = 0;
+    tests.forEach(function(test, i) {
+      setTimeout(function() {
+        var result = false;
+        try { result = test.fn(); } catch(e) { result = false; }
+        var badge = document.getElementById(test.id);
+        if (result) {
+          badge.textContent = 'PASS';
+          badge.className = 'badge pass';
+          pass++;
+        } else {
+          badge.textContent = 'FAIL';
+          badge.className = 'badge fail';
+          fail++;
+        }
+        var done = i + 1;
+        document.getElementById('totalNum').textContent = done;
+        document.getElementById('passNum').textContent  = pass;
+        document.getElementById('failNum').textContent  = fail;
+        var pct = Math.round((done / tests.length) * 100);
+        document.getElementById('progressFill').style.width = pct + '%';
+      }, delay);
+      delay += 200;
+    });
+  }
+</script>
+</body>
+</html>
